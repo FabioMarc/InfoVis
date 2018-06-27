@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--//=====================================================================+
+// File name 	: index.html
+// Begin	: 21/06/2018
+// Last Update	:
+// Description  : 
+// Author	: Fabio Marchionni & Giulio Dini
+// Versione	: 1.0
+//
+//=====================================================================+-->
+<html>
+	<head>
+		<meta charset="UTF-8">		
+		<title>InfoVis - Secondo Progetto</title>
+		<script type="text/javascript" src="d3/d3.min.js" charset="utf-8"></script>
+		<script type="text/javascript" src="function.js" ></script>
+		<link href="stile.css" rel="stylesheet" type="text/css">
+
+		<!-- Sorgenti del calendario --> 
+		<link href="CalendarControl.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="CalendarControl.js" ></script>
+	</head>
+
+	<body onload="updateData('TEMPARIA2M_MAXG')">
+	     	<div>
+			<table>
+				<tr>
+				<td align='center'><h2> Serie Storica Agrometeo Regione Lazio</h2></td>
+				</tr>
+				<tr>
+					<td>Filtro sulla data: <input TYPE="text" onfocus="showCalendarControl(this);" name="data" SIZE="10" maxlength="10" id="calendar" />
+						Filtro sulla città: <select id="citta"><option value=""></option></select>
+						<input type="checkbox" id="myCheckbox"> Ordinamento crescente
+					<br></td>
+					</tr>
+				<tr>
+					<td>
+						<button id="TMax" value="TemperaturaMax" onclick="updateData('TEMPARIA2M_MAXG')">Temperatura Max</button>
+					    <button id="TMin" onclick="updateData('TEMPARIA2M_MING')">Temperatura Min</button>
+					    <button id="TMin" onclick="updateData('TEMPARIA2M_MEDG')">Temperatura Media</button>
+					    <button id="TMin" onclick="updateData('UMARIA2M_MEDG')">Umidità Media</button>
+					    <button id="TMin" onclick="updateData('PREC_TOTG')">Precipitazioni TOT</button>
+					</td>
+				</tr>
+				<tr>
+					<td><svg id="grafico" width="1400" height="550"></svg></td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>
+
+

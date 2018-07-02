@@ -4,7 +4,7 @@
 // Last Update	:
 // Description  : InfoVis - Secondo Progetto, libreria delle funzioni.
 // Author		: Fabio Marchionni & Giulio Dini
-// Versione		: 1.0
+// Versione		: 1.1
 //
 //=====================================================================+
 //******************************************************************
@@ -89,6 +89,7 @@ function updateData(filtro) {
 				//Valore di default per caricare i dati alla prima apertura della pagina web.
 				if( citta=="" && DataCalendar=="" ) {
 					DataCalendar="08/01/2018";
+					filtro="TEMPARIA2M_MAXG";
 				}
 				if(citta!="") {
 					document.getElementById("calendar").value = "";
@@ -170,7 +171,7 @@ function updateData(filtro) {
 					.attr("y", 0 - (margin.top / 2))
 					.attr("text-anchor", "middle")  
 					.style("font-size", "20px") 
-					.text(DataCalendar);
+					.text(DataCalendar + " - " + testoTitolo);
 				}
 				else {
 				g.append("text")

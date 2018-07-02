@@ -1,10 +1,10 @@
 //=====================================================================+
 // File name 	: function.js
-// Begin	: 21/06/2018
+// Begin		: 21/06/2018
 // Last Update	:
 // Description  : InfoVis - Secondo Progetto, libreria delle funzioni.
-// Author	: Fabio Marchionni & Giulio Dini
-// Versione	: 1.0
+// Author		: Fabio Marchionni & Giulio Dini
+// Versione		: 1.0
 //
 //=====================================================================+
 //******************************************************************
@@ -80,9 +80,10 @@ function updateData(filtro) {
 		    IndiceValidita: d.IndiceValidita
 		  };
 	}).then(function(data) {
+
 				//Recupero la data inserita dall'utente.
 				var DataCalendar = document.getElementById("calendar").value;
-				//Recupero l'eventuale filtro richiesto dall'utente sul nome citt‡.
+				//Recupero l'eventuale filtro richiesto dall'utente sul nome citt√†.
 				var citta =  document.getElementById("citta").value;
 				
 				//Valore di default per caricare i dati alla prima apertura della pagina web.
@@ -98,7 +99,7 @@ function updateData(filtro) {
 				//Con i dati filtrati costruisco il menu a tendina.
 				var select = d3.select('select');
 
-				//Valorizzo il campo select con i nomi delle citt‡ distinte.
+				//Valorizzo il campo select con i nomi delle citt√† distinte.
 				var options = select
 				  .selectAll('option')
 					.data(filtered).enter()
@@ -119,7 +120,7 @@ function updateData(filtro) {
 				// Rimuovo l'eventuale tag "g" inserito in precedenza
 				d3.select("g").remove();
 	
-				// Inserisco il nuovo tag "g" che conterr‡ il grafico selezioanto.
+				// Inserisco il nuovo tag "g" che conterr√† il grafico selezioanto.
 				var g = svg.append("g")
 			    	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -144,7 +145,25 @@ function updateData(filtro) {
 					}
 				} 
 
-				//Titolo del grafico
+				//Titolo del grafico funzione del filtro impostato dall'utente
+				var testoTitolo="";
+				switch(filtro) {
+					case "TEMPARIA2M_MAXG": 
+						testoTitolo="Temperatura Massima";
+						break;
+					case "TEMPARIA2M_MING": 
+						testoTitolo="Temperatura Minima";
+						break;
+					case "TEMPARIA2M_MEDG": 
+						testoTitolo="Temperatura Media";
+						break;
+					case "UMARIA2M_MEDG": 
+						testoTitolo="Umidita\' Media";
+						break;
+					case "PREC_TOTG": 
+						testoTitolo="Precipitazioni";
+						break;						
+				}
 				if(DataCalendar!="") {			
 				g.append("text")
 					.attr("x", (width / 2))             
@@ -159,7 +178,7 @@ function updateData(filtro) {
 					.attr("y", 0 - (margin.top / 2))
 					.attr("text-anchor", "middle")  
 					.style("font-size", "20px") 
-					.text(citta);					
+					.text(citta + " - " + testoTitolo);					
 				}
 				
 				x.domain(filtered.map(function(filtered) {  if(citta=="") {return filtered.Stazione;} else { return filtered.DataRilevazione; }; }));
@@ -195,8 +214,9 @@ function updateData(filtro) {
 				    .attr("x", function(filtered) { if(citta=="") {return x(filtered.Stazione);} else { return x(filtered.DataRilevazione); }; })
 				    .attr("y", function(filtered) { return y(filtered.Valore); })
 				    .attr("width", x.bandwidth())
-				    .attr("height", function(filtered) { return height - y(filtered.Valore); })		  
-					 
+				    .attr("height", function(filtered) { return height - y(filtered.Valore); })
+					.attr("fill", function(filtered) { if(filtro=="TEMPARIA2M_MAXG") { return "rgb(" + Math.pow(filtered.Valore,2) +  ",0, 0)"; } 
+									   else { return "rgb(0, 0, " + Math.pow(filtered.Valore,2) + ")"; } })
 				//Inserisco le etichette 
 				//g.selectAll(".text")
 				//	.data(filtered)
@@ -216,8 +236,7 @@ function updateData(filtro) {
 				//		d3.select(this).style('fill', 'white')
 				//		d3.select(this).style("display", "none") 						
 				//	})		
-
-					
+				
 	});
 
 }

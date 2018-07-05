@@ -4,7 +4,7 @@
 // Last Update	:
 // Description  : InfoVis - Secondo Progetto, libreria delle funzioni.
 // Author		: Fabio Marchionni & Giulio Dini
-// Versione		: 1.1
+// Versione		: 1.3
 //
 //=====================================================================+
 //******************************************************************
@@ -146,6 +146,7 @@ function updateData(filtro) {
 					}
 				} 
 
+
 				//Titolo del grafico funzione del filtro impostato dall'utente
 				var testoTitolo="";
 				switch(filtro) {
@@ -211,10 +212,28 @@ function updateData(filtro) {
 				g.selectAll(".bar")
 				    .data(filtered)
 				    .enter().append("rect")
-					.on("mouseover", function(){d3.select(this).style("fill","yellow");})
-					.on("mouseout", function(){d3.select(this).style("fill",function(filtered){ if(filtro=="TEMPARIA2M_MAXG") { return "rgb(" + Math.pow(filtered.Valore,2) +  ",0, 0)"; } 
-									   else { return "rgb(0, 0, " + Math.pow(filtered.Valore,2) + ")"; } });})
-					.transition(t)
+
+				  .on("mouseover", function() { tooltip.style("display", null); 
+								d3.select(this).style("fill","yellow");
+							      })
+				  .on("mouseout", function(filtered) { 
+									tooltip.style("display", "none"); 
+							       		d3.select(this).style("fill",function(SerieFiltrata){ if(filtro=="TEMPARIA2M_MAXG") { 
+																return "rgb(" + Math.pow(SerieFiltrata.Valore,2) +  ",0, 0)"; 
+														              } 
+														              else { 
+																return "rgb(0, 0, " + Math.pow(SerieFiltrata.Valore,2) + ")"; 
+														              }
+															})
+				  })
+				  .on("mousemove", function(filtered) {
+				    var xPosition = d3.mouse(this)[0] - 15;
+				    var yPosition = d3.mouse(this)[1] - 25;
+				    tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+				    tooltip.select("text").text(filtro + ":" + filtered.Valore);
+				  })
+
+				.transition(t)
 				    .attr("class", "bar")		
 				    .attr("x", function(filtered) { if(citta=="") {return x(filtered.Stazione);} else { return x(filtered.DataRilevazione); }; })						
 				    .attr("y", function(filtered) { return y(filtered.Valore); })					
@@ -240,8 +259,26 @@ function updateData(filtro) {
 				//	.on('mouseout', function() {
 				//		d3.select(this).style('fill', 'white')
 				//		d3.select(this).style("display", "none") 						
-				//	})		
+				//	})	
+
+				// Prep the tooltip bits, initial display is hidden
+				var tooltip = svg.append("g")
+				  .attr("class", "tooltip")
+				  .style("display", "none");
+				    
+				tooltip.append("rect")
+				  .attr("width", 30)
+				  .attr("height", 20)
+				  .attr("fill", "white")
+				  .style("opacity", 0.5);
 				
+				tooltip.append("text")
+				  .attr("x", 15)
+				  .attr("dy", "1.2em")
+				  .style("text-anchor", "middle")
+				  .attr("font-size", "12px")
+				  .attr("font-weight", "bold");	
+								
 	});
 
 }

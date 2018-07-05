@@ -210,14 +210,18 @@ function updateData(filtro) {
 				//Inserisco i valori nel grafico filtrando quelli richiesti dall'utente.
 				g.selectAll(".bar")
 				    .data(filtered)
-				    .enter().append("rect").transition(t)
-				    .attr("class", "bar")			
-				    .attr("x", function(filtered) { if(citta=="") {return x(filtered.Stazione);} else { return x(filtered.DataRilevazione); }; })
-				    .attr("y", function(filtered) { return y(filtered.Valore); })
-				    .attr("width", x.bandwidth())
+				    .enter().append("rect")
+					.on("mouseover", function(){d3.select(this).style("fill","yellow");})
+					.on("mouseout", function(){d3.select(this).style("fill",function(filtered){ if(filtro=="TEMPARIA2M_MAXG") { return "rgb(" + Math.pow(filtered.Valore,2) +  ",0, 0)"; } 
+									   else { return "rgb(0, 0, " + Math.pow(filtered.Valore,2) + ")"; } });})
+					.transition(t)
+				    .attr("class", "bar")		
+				    .attr("x", function(filtered) { if(citta=="") {return x(filtered.Stazione);} else { return x(filtered.DataRilevazione); }; })						
+				    .attr("y", function(filtered) { return y(filtered.Valore); })					
+				    .attr("width", x.bandwidth())					
 				    .attr("height", function(filtered) { return height - y(filtered.Valore); })
 					.attr("fill", function(filtered) { if(filtro=="TEMPARIA2M_MAXG") { return "rgb(" + Math.pow(filtered.Valore,2) +  ",0, 0)"; } 
-									   else { return "rgb(0, 0, " + Math.pow(filtered.Valore,2) + ")"; } })
+									   else { return "rgb(0, 0, " + Math.pow(filtered.Valore,2) + ")"; } });
 				//Inserisco le etichette 
 				//g.selectAll(".text")
 				//	.data(filtered)

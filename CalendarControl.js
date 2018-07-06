@@ -329,6 +329,7 @@ var calendarControl = new CalendarControl();
 
 function showCalendarControl(textField) {
   // textField.onblur = hideCalendarControl;
+  document.getElementById("citta").value = ""; 
   calendarControl.show(textField);
 }
 

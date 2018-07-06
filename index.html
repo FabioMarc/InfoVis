@@ -2,10 +2,10 @@
 <!--//=====================================================================+
 // File name 	: index.html
 // Begin	: 21/06/2018
-// Last Update	: 05/07/2018
-// Description  : 
+// Last Update	: 06/07/2018
+// Description  : InfoVis - Secondo Progetto, pagina principale.
 // Author	: Fabio Marchionni & Giulio Dini
-// Versione	: 1.1
+// Versione     : 1.1
 //
 //=====================================================================+-->
 <html>
@@ -18,10 +18,11 @@
 
 		<!-- Sorgenti del calendario --> 
 		<link href="CalendarControl.css" rel="stylesheet" type="text/css">
-		<script type="text/javascript" src="CalendarControl.js" ></script>	
+		<script type="text/javascript" src="CalendarControl.js" ></script>
+
 	</head>
 
-	<body onload="updateData('TEMPARIA2M_MAXG')">
+	<body onload="init()">
 	     	<div>
 			<table>
 				<tr>
@@ -35,7 +36,7 @@
 					</tr>
 				<tr>
 					<td>
-						<button class="button" id="TMax" value="TemperaturaMax" onclick="updateData('TEMPARIA2M_MAXG')">Temperatura Max</button>
+					    <button class="button" id="TMax" value="TemperaturaMax" onclick="updateData('TEMPARIA2M_MAXG')">Temperatura Max</button>
 					    <button class="button" id="TMin" onclick="updateData('TEMPARIA2M_MING')">Temperatura Min</button>
 					    <button class="button" id="TMin" onclick="updateData('TEMPARIA2M_MEDG')">Temperatura Media</button>
 					    <button class="button" id="TMin" onclick="updateData('UMARIA2M_MEDG')">Umidità Media</button>

@@ -293,8 +293,8 @@ function updateData(filtro) {
 			  .style("opacity", 0.5);
 				
 			tooltip.append("text")
-			  .attr("x", 15)
-			  .attr("dy", "1.2em")
+			  .attr("x", 18)
+			  .attr("dy", "1.0em")
 			  .style("text-anchor", "middle")
 			  .attr("font-size", "12px")
 			  .attr("font-weight", "bold");									

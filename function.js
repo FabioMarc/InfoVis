@@ -1,15 +1,15 @@
 //=====================================================================+
 // File name 	: function.js
-// Begin		: 21/06/2018
-// Last Update	:
+// Begin	: 21/06/2018
+// Last Update	: 06/07/2018
 // Description  : InfoVis - Secondo Progetto, libreria delle funzioni.
-// Author		: Fabio Marchionni & Giulio Dini
-// Versione		: 1.3
+// Author	: Fabio Marchionni & Giulio Dini
+// Versione	: 1.4
 //
 //=====================================================================+
-//******************************************************************
+//****************************************************************************************
 //Funzione utilizzata per l'ordidamento dell'array in modo crescente
-//******************************************************************
+//****************************************************************************************
 function compare(a, b) {
   // Use toUpperCase() to ignore character casing
   //const genreA = a.genre.toUpperCase();
@@ -24,9 +24,9 @@ function compare(a, b) {
   return comparison;
 }
 
-//******************************************************************
+//****************************************************************************************
 //Funzione utilizzata per l'ordidamento dell'array in modo decrescente
-//******************************************************************
+//****************************************************************************************
 function compareInverted(a, b) {
   // Use toUpperCase() to ignore character casing
   // Use toUpperCase() to ignore character casing
@@ -42,9 +42,9 @@ function compareInverted(a, b) {
   return comparison;
 }
 
-//******************************************************************
+//****************************************************************************************
 //Funzione che esegue il filtraggio dei dati sulla base della scelta utente.
-//******************************************************************
+//****************************************************************************************
 function filter(data,filtro,DataCalendar,citta) {
 	var filtered=[];
 	if(citta=="") { 
@@ -65,10 +65,65 @@ function filter(data,filtro,DataCalendar,citta) {
 	return filtered;
 }
 
-//******************************************************************
-//Funzione che disegna il grafico.
-//******************************************************************
+//****************************************************************************************
+//Funzione che inserisce i titoli negli assi cartesiani.
+//****************************************************************************************
+function inseriscriTitoloAssi(g,citta) {
+	
+			if(citta!="") {
+				g.append("text")
+				        .attr("x", 700 )
+				        .attr("y",  460 )
+				        .style("text-anchor", "middle")
+				        .text("Data");
+			}
+			else {
+				g.append("text")
+				        .attr("x", 700 )
+				        .attr("y",  510 )
+				        .style("text-anchor", "middle")
+				        .text("Citta'");			
+			}
+}
+
+//****************************************************************************************
+//Funzione che inizializza il menu a tendina.
+//****************************************************************************************
+function init() {
+	//var nomeFile = "dati/prova.csv";
+	var nomeFile = "dati/arsial2018.csv";
+	d3.dsv(";", nomeFile, function(d) {
+		  return {
+		    Stazione: d.Stazione,
+		    Grandezza: d.Grandezza,
+		    DataRilevazione: d.DataRilevazione.substring(0,10),
+		    Valore: +d.Valore,
+		    IndiceValidita: d.IndiceValidita
+		  };
+	}).then(function(data) {
+			//Filtraggio dei dati sulla base della scelta utente
+			var filtered = filter(data,"TEMPARIA2M_MAXG","08/01/2018","");
+
+			//Con i dati filtrati costruisco il menu a tendina.
+			var select = d3.select('select');
+
+			//Valorizzo il campo select con i nomi delle città distinte.
+			var options = select
+				.selectAll('option')
+				.data(filtered).enter()
+				.append('option')
+					.text(function (d) { return d.Stazione; })
+					.attr("value",function(d){return d.Stazione;});	
+	
+	})
+}
+
+//****************************************************************************************
+//Funzione che aggiorna i dati e disegna il grafico.
+//****************************************************************************************
 function updateData(filtro) {
+
+
 	//var nomeFile = "dati/prova.csv";
 	var nomeFile = "dati/arsial2018.csv";
 	d3.dsv(";", nomeFile, function(d) {
@@ -85,30 +140,13 @@ function updateData(filtro) {
 			var DataCalendar = document.getElementById("calendar").value;
 			//Recupero l'eventuale filtro richiesto dall'utente sul nome città.
 			var citta =  document.getElementById("citta").value;
-				
-			//Valore di default per caricare i dati alla prima apertura della pagina web.
-			if( citta=="" && DataCalendar=="") {
-				DataCalendar="08/01/2018";
-				filtro="TEMPARIA2M_MAXG";
-				document.getElementById("calendar").value="08/01/2018";
-			}else if(citta!="") {
-				document.getElementById("calendar").value = "";
-			}if(DataCalendar!=""){
-				document.getElementById("citta").selectedIndex=0;
+			if(citta=="" && DataCalendar=="") { 
+	    			alert("Valorizzare il campo data o il campo citta'.");
+				return; //arresto l'esecuzione della funzione.
 			}
 			//Filtraggio dei dati sulla base della scelta utente
 			var filtered = filter(data,filtro,DataCalendar,citta);
-			
-			//Con i dati filtrati costruisco il menu a tendina.
-			var select = d3.select('select');
-			
-			//Valorizzo il campo select con i nomi delle città distinte.
-			var options = select
-				.selectAll('option')
-				.data(filtered).enter()
-				.append('option')
-					.text(function (d) { return d.Stazione; });			
-				
+
 			var t = d3.transition()
 			   .duration(500);
 			   
@@ -168,6 +206,7 @@ function updateData(filtro) {
 					break;						
 			}
 			
+			//Inserimento del Titolo nel grafico.
 			if(DataCalendar!="") {			
 				g.append("text")
 				.attr("x", (width / 2))             
@@ -189,10 +228,10 @@ function updateData(filtro) {
 			y.domain([0, d3.max(filtered, function(filtered) { return filtered.Valore; })]);
 
 			g.append("g")
-		      .attr("class", "axis axis--x")
-		      .attr("transform", "translate(0," + height + ")")
-		      .call(d3.axisBottom(x))
-		      .selectAll("text")	
+		       .attr("class", "axis axis--x")
+		       .attr("transform", "translate(0," + height + ")")
+		       .call(d3.axisBottom(x))
+		       .selectAll("text")	
 		      	.style("text-anchor", "end")
 		        .attr("dx", "-.8em")
 		        .attr("dy", ".15em")
@@ -209,6 +248,9 @@ function updateData(filtro) {
 			      .attr("dy", "0.71em")
 			      .attr("text-anchor", "end")
 			      .text("Titolo");
+
+			
+			inseriscriTitoloAssi(g,citta);
  
 			//Inserisco i valori nel grafico filtrando quelli richiesti dall'utente.
 			g.selectAll(".bar")

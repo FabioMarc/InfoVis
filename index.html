@@ -5,7 +5,7 @@
 // Last Update	: 06/07/2018
 // Description  : InfoVis - Secondo Progetto, pagina principale.
 // Author	: Fabio Marchionni & Giulio Dini
-// Versione     : 1.1
+// Versione     : 1.2
 //
 //=====================================================================+-->
 <html>
@@ -30,7 +30,7 @@
 				</tr>
 				<tr>
 					<td>Filtro sulla data: <input TYPE="text" onfocus="showCalendarControl(this);" name="data" SIZE="10" maxlength="10" id="calendar" />
-						Filtro sulla città: <select id="citta"><option value=""></option></select>
+						Filtro sulla città: <select id="citta" onchange="document.getElementById('calendar').value = ''; ";><option value=""></option></select>
 						<input type="checkbox" id="myCheckbox"> Ordinamento crescente
 					<br></td>
 					</tr>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <!--//=====================================================================+
 // File name 	: index.html
-// Begin	: 21/06/2018
-// Last Update	: 06/07/2018
+// Begin		: 21/06/2018
+// Last Update	: 08/07/2018
 // Description  : InfoVis - Secondo Progetto, pagina principale.
-// Author	: Fabio Marchionni & Giulio Dini
-// Versione     : 1.2
+// Author		: Fabio Marchionni & Giulio Dini
+// Versione     : 1.3
 //
 //=====================================================================+-->
 <html>
@@ -23,14 +23,16 @@
 	</head>
 
 	<body onload="init()">
-	     	<div>
+	     	<div >
 			<table>
 				<tr>
 				<td align='center'><h2> Serie Storica Agrometeo Regione Lazio</h2></td>
 				</tr>
 				<tr>
 					<td>Filtro sulla data: <input TYPE="text" onfocus="showCalendarControl(this);" name="data" SIZE="10" maxlength="10" id="calendar" />
-						Filtro sulla città: <select id="citta" onchange="document.getElementById('calendar').value = ''; ";><option value=""></option></select>
+						<img onclick="javascript:changeDate('prev')" src="img/prev.jpg"  height="21" width="21"/>		    
+						<img onclick="javascript:changeDate('next')" src="img/next.jpg"  height="21" width="21"/>		
+						&ensp; Filtro sulla città: <select id="citta" onchange="document.getElementById('calendar').value = ''; ";><option value=""></option></select>
 						<input type="checkbox" id="myCheckbox"> Ordinamento crescente
 					<br></td>
 					</tr>

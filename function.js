@@ -1,12 +1,16 @@
 //=====================================================================+
 // File name 	: function.js
 // Begin	: 21/06/2018
-// Last Update	: 06/07/2018
+// Last Update	: 08/07/2018
 // Description  : InfoVis - Secondo Progetto, libreria delle funzioni.
 // Author	: Fabio Marchionni & Giulio Dini
-// Versione	: 1.4
+// Versione	: 1.5
 //
 //=====================================================================+
+
+
+var globalFiltro;
+
 //****************************************************************************************
 //Funzione utilizzata per l'ordidamento dell'array in modo crescente
 //****************************************************************************************
@@ -68,8 +72,9 @@ function filter(data,filtro,DataCalendar,citta) {
 //****************************************************************************************
 //Funzione che inserisce i titoli negli assi cartesiani.
 //****************************************************************************************
-function inseriscriTitoloAssi(g,citta) {
-	
+function inseriscriTitoloAssi(g,citta,etichettaAsseY) {
+
+			// label asse x
 			if(citta!="") {
 				g.append("text")
 				        .attr("x", 700 )
@@ -84,6 +89,18 @@ function inseriscriTitoloAssi(g,citta) {
 				        .style("text-anchor", "middle")
 				        .text("Citta'");			
 			}
+			
+			
+
+			// label asse y
+			g.append("text")
+			      .attr("transform", "rotate(-90)")
+			      .attr("y", -55)
+			      .attr("x",0 - (200))
+			      .attr("dy", "1em")
+			      .style("text-anchor", "middle")
+			      .text(etichettaAsseY);  
+
 }
 
 //****************************************************************************************
@@ -118,11 +135,51 @@ function init() {
 	})
 }
 
+
+//****************************************************************************************
+// Funzione utilizzata per spostare in avandi o indietro la data.
+//****************************************************************************************
+function changeDate(change) {
+	//Recupero la data inserita dall'utente.
+	var DataCalendar = document.getElementById("calendar").value;
+
+	if(DataCalendar=="") { 
+		alert("Valorizzare il campo data.");
+		return; //arresto l'esecuzione della funzione.
+	}
+	//Recupero la data inserita dall'utente.
+	var DataImpostata = document.getElementById("calendar").value;
+	var datasplit = DataImpostata.split("/");
+	var nextDay = new Date(datasplit[2],(datasplit[1]-1),datasplit[0]);
+	
+	if(change=="next") {
+		nextDay.setDate(nextDay.getDate()+1);
+	}
+	else if(change=="prev") {
+		nextDay.setDate(nextDay.getDate()-1);
+	}
+	var gg, mm, aaaa;
+	gg = nextDay.getDate() + "/";
+	mm = nextDay.getMonth() + 1 + "/";
+	aaaa = nextDay.getFullYear();
+
+	if(parseInt(gg) <= 9) { gg = "0"+gg;}
+	if(parseInt(mm) <= 9) { mm = "0"+mm;}
+
+	//Aggiorno il campo data nella form.
+	document.getElementById("calendar").value=gg + mm + aaaa;
+
+	//Ridisegno il grafico a fronte del cambiamento sulla data.
+	updateData(globalFiltro);
+}
+
+
 //****************************************************************************************
 //Funzione che aggiorna i dati e disegna il grafico.
 //****************************************************************************************
 function updateData(filtro) {
 
+	globalFiltro=filtro;
 
 	//var nomeFile = "dati/prova.csv";
 	var nomeFile = "dati/arsial2018.csv";
@@ -148,7 +205,7 @@ function updateData(filtro) {
 			var filtered = filter(data,filtro,DataCalendar,citta);
 
 			var t = d3.transition()
-			   .duration(500);
+			   .duration(200);
 			   
 			var svg = d3.select("svg"),
 			    margin = {top: 30, right: 20, bottom: 170, left: 50},
@@ -191,18 +248,23 @@ function updateData(filtro) {
 			switch(filtro) {
 				case "TEMPARIA2M_MAXG": 
 					testoTitolo="Temperatura Massima";
+					etichettaAsseY ="Temperatura (C)";
 					break;
 				case "TEMPARIA2M_MING": 
 					testoTitolo="Temperatura Minima";
+					etichettaAsseY ="Temperatura (C)";
 					break;
 				case "TEMPARIA2M_MEDG": 
 					testoTitolo="Temperatura Media";
+					etichettaAsseY ="Temperatura (C)";
 					break;
 				case "UMARIA2M_MEDG": 
 					testoTitolo="Umidita\' Media";
+					etichettaAsseY ="kg/m^3";
 					break;
 				case "PREC_TOTG": 
 					testoTitolo="Precipitazioni";
+					etichettaAsseY ="mm";
 					break;						
 			}
 			
@@ -249,8 +311,8 @@ function updateData(filtro) {
 			      .attr("text-anchor", "end")
 			      .text("Titolo");
 
-			
-			inseriscriTitoloAssi(g,citta);
+			//Inserisco il Titolo all'asse X in funzione della ricerca richiesta dall'utente.
+			inseriscriTitoloAssi(g,citta,etichettaAsseY);
  
 			//Inserisco i valori nel grafico filtrando quelli richiesti dall'utente.
 			g.selectAll(".bar")
@@ -287,7 +349,7 @@ function updateData(filtro) {
 				.style("display", "none");
 				    
 			tooltip.append("rect")
-			  .attr("width", 30)
+			  .attr("width", 40)
 			  .attr("height", 20)
 			  .attr("fill", "white")
 			  .style("opacity", 0.5);
@@ -296,7 +358,7 @@ function updateData(filtro) {
 			  .attr("x", 18)
 			  .attr("dy", "1.0em")
 			  .style("text-anchor", "middle")
-			  .attr("font-size", "12px")
-			  .attr("font-weight", "bold");									
+			  .attr("font-size", "16px")
+			  .attr("font-weight", "bold");	
 	});
 }

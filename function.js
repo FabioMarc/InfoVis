@@ -15,9 +15,6 @@ var globalFiltro;
 //Funzione utilizzata per l'ordidamento dell'array in modo crescente
 //****************************************************************************************
 function compare(a, b) {
-  // Use toUpperCase() to ignore character casing
-  //const genreA = a.genre.toUpperCase();
-  //const genreB = b.genre.toUpperCase();
 
   let comparison = 0;
   if (a.Valore > b.Valore) {
@@ -32,10 +29,6 @@ function compare(a, b) {
 //Funzione utilizzata per l'ordidamento dell'array in modo decrescente
 //****************************************************************************************
 function compareInverted(a, b) {
-  // Use toUpperCase() to ignore character casing
-  // Use toUpperCase() to ignore character casing
-  //const genreA = a.genre.toUpperCase();
-  //const genreB = b.genre.toUpperCase();
 
   let comparison = 0;
   if (a.Valore < b.Valore) {
@@ -89,8 +82,6 @@ function inseriscriTitoloAssi(g,citta,etichettaAsseY) {
 				        .style("text-anchor", "middle")
 				        .text("Citta'");			
 			}
-			
-			
 
 			// label asse y
 			g.append("text")
@@ -198,7 +189,7 @@ function updateData(filtro) {
 			//Recupero l'eventuale filtro richiesto dall'utente sul nome città.
 			var citta =  document.getElementById("citta").value;
 			if(citta=="" && DataCalendar=="") { 
-	    			alert("Valorizzare il campo data o il campo citta'.");
+	    		alert("Valorizzare il campo data o il campo citta'.");
 				return; //arresto l'esecuzione della funzione.
 			}
 			//Filtraggio dei dati sulla base della scelta utente
@@ -229,7 +220,7 @@ function updateData(filtro) {
 				}else { 
 					filtered.sort(compareInverted); 
 				}
-			}	
+			}
 			
 			var body = d3.select("body");
 				
@@ -259,8 +250,8 @@ function updateData(filtro) {
 					etichettaAsseY ="Temperatura (C)";
 					break;
 				case "UMARIA2M_MEDG": 
-					testoTitolo="Umidita\' Media";
-					etichettaAsseY ="kg/m^3";
+					testoTitolo="Umidita\' media";
+					etichettaAsseY ="Umidita' relativa";
 					break;
 				case "PREC_TOTG": 
 					testoTitolo="Precipitazioni";

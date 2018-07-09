@@ -329,7 +329,8 @@ var calendarControl = new CalendarControl();
 
 function showCalendarControl(textField) {
   // textField.onblur = hideCalendarControl;
-  document.getElementById("citta").value = ""; 
+  document.getElementById("citta").value = "";
+  document.getElementById('myCheckbox').disabled=false;  
   calendarControl.show(textField);
 }
 

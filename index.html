@@ -32,7 +32,7 @@
 					<td>Filtro sulla data: <input TYPE="text" onfocus="showCalendarControl(this);" name="data" SIZE="10" maxlength="10" id="calendar" />
 						<img onclick="javascript:changeDate('prev')" src="img/prev.jpg"  height="21" width="21"/>		    
 						<img onclick="javascript:changeDate('next')" src="img/next.jpg"  height="21" width="21"/>		
-						&ensp; Filtro sulla città: <select id="citta" onchange="document.getElementById('calendar').value = ''; ";><option value=""></option></select>
+						&ensp; Filtro sulla città: <select id="citta" onchange="document.getElementById('calendar').value = ''; document.getElementById('myCheckbox').disabled=true;";><option value=""></option></select>
 						<input type="checkbox" id="myCheckbox"> Ordinamento crescente
 					<br></td>
 					</tr>

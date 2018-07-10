@@ -1,7 +1,7 @@
 //=====================================================================+
 // File name 	: function.js
 // Begin	: 21/06/2018
-// Last Update	: 08/07/2018
+// Last Update	: 10/07/2018
 // Description  : InfoVis - Secondo Progetto, libreria delle funzioni.
 // Author	: Fabio Marchionni & Giulio Dini
 // Versione	: 1.6

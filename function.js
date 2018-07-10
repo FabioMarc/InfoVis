@@ -4,12 +4,22 @@
 // Last Update	: 08/07/2018
 // Description  : InfoVis - Secondo Progetto, libreria delle funzioni.
 // Author	: Fabio Marchionni & Giulio Dini
-// Versione	: 1.5
+// Versione	: 1.6
 //
 //=====================================================================+
 
-
+//Variabili globali
 var globalFiltro;
+var annoSerieStorica=2018;
+
+
+
+function settaNomeFile() {
+	annoSerieStorica = document.getElementById('anno').value;
+	//Ridisegno il grafico a fronte del cambiamento sulla data.
+	updateData(globalFiltro);
+}
+
 
 //****************************************************************************************
 //Funzione utilizzata per l'ordidamento dell'array in modo crescente
@@ -98,8 +108,7 @@ function inseriscriTitoloAssi(g,citta,etichettaAsseY) {
 //Funzione che inizializza il menu a tendina.
 //****************************************************************************************
 function init() {
-	//var nomeFile = "dati/prova.csv";
-	var nomeFile = "dati/arsial2018.csv";
+	var nomeFile = "dati/arsial" + annoSerieStorica + ".csv";
 	d3.dsv(";", nomeFile, function(d) {
 		  return {
 		    Stazione: d.Stazione,
@@ -113,7 +122,7 @@ function init() {
 			var filtered = filter(data,"TEMPARIA2M_MAXG","08/01/2018","");
 
 			//Con i dati filtrati costruisco il menu a tendina.
-			var select = d3.select('select');
+			var select = d3.select('#citta');
 
 			//Valorizzo il campo select con i nomi delle città distinte.
 			var options = select
@@ -172,8 +181,7 @@ function updateData(filtro) {
 
 	globalFiltro=filtro;
 
-	//var nomeFile = "dati/prova.csv";
-	var nomeFile = "dati/arsial2018.csv";
+	var nomeFile = "dati/arsial" + annoSerieStorica + ".csv";
 	d3.dsv(";", nomeFile, function(d) {
 		  return {
 		    Stazione: d.Stazione,
@@ -199,7 +207,7 @@ function updateData(filtro) {
 			   .duration(200);
 			   
 			var svg = d3.select("svg"),
-			    margin = {top: 30, right: 20, bottom: 170, left: 50},
+			    margin = {top: 30, right: 20, bottom: 170, left: 100},
 			    width = +svg.attr("width") - margin.left - margin.right,
 			    height = +svg.attr("height") - margin.top - margin.bottom;
 	
@@ -334,6 +342,7 @@ function updateData(filtro) {
 					txt=txt+"°C";
 				}
 			    	tooltip.select("text").text(txt);
+
 			  })
 
 			.transition(t)
@@ -357,7 +366,7 @@ function updateData(filtro) {
 				.attr("height", 20)
 				.attr("fill", "white")
 				.style("opacity", 0.5);
-					
+				
 			tooltip.append("text")
 				.attr("x", 50)
 				.attr("dy", "1.0em")

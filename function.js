@@ -1,7 +1,7 @@
 //=====================================================================+
 // File name 	: function.js
 // Begin	: 21/06/2018
-// Last Update	: 10/07/2018
+// Last Update	: 08/07/2018
 // Description  : InfoVis - Secondo Progetto, libreria delle funzioni.
 // Author	: Fabio Marchionni & Giulio Dini
 // Versione	: 1.6
@@ -80,10 +80,10 @@ function inseriscriTitoloAssi(g,citta,etichettaAsseY) {
 			// label asse x
 			if(citta!="") {
 				g.append("text")
-				        .attr("x", 700 )
-				        .attr("y",  460 )
+				        .attr("x", 600 )
+				        .attr("y",  400 )
 				        .style("text-anchor", "middle")
-				        .text("Data");
+				        .text("Anno "+annoSerieStorica);
 			}
 			else {
 				g.append("text")
@@ -109,6 +109,7 @@ function inseriscriTitoloAssi(g,citta,etichettaAsseY) {
 //****************************************************************************************
 function init() {
 	var nomeFile = "dati/arsial" + annoSerieStorica + ".csv";
+
 	d3.dsv(";", nomeFile, function(d) {
 		  return {
 		    Stazione: d.Stazione,
@@ -194,8 +195,10 @@ function updateData(filtro) {
 
 			//Recupero la data inserita dall'utente.
 			var DataCalendar = document.getElementById("calendar").value;
+			
 			//Recupero l'eventuale filtro richiesto dall'utente sul nome città.
 			var citta =  document.getElementById("citta").value;
+			
 			if(citta=="" && DataCalendar=="") { 
 	    		alert("Valorizzare il campo data o il campo citta'.");
 				return; //arresto l'esecuzione della funzione.
@@ -211,8 +214,6 @@ function updateData(filtro) {
 			    width = +svg.attr("width") - margin.left - margin.right,
 			    height = +svg.attr("height") - margin.top - margin.bottom;
 	
-			var x = d3.scaleBand().rangeRound([0, width]).padding(0.1),
-		    	    y = d3.scaleLinear().rangeRound([height, 0]);
 
 			// Rimuovo l'eventuale tag "g" inserito in precedenza
 			d3.select("g").remove();
@@ -284,22 +285,35 @@ function updateData(filtro) {
 					.style("font-size", "20px") 
 					.text(citta + " - " + testoTitolo);					
 			}
-				
-			x.domain(filtered.map(function(filtered) {  if(citta=="") {return filtered.Stazione;} else { return filtered.DataRilevazione; }; }));
-			y.domain([0, d3.max(filtered, function(filtered) { return filtered.Valore; })]);
 
-			g.append("g")
-		       .attr("class", "axis axis--x")
-		       .attr("transform", "translate(0," + height + ")")
-		       .call(d3.axisBottom(x))
-		       .selectAll("text")	
-		      	.style("text-anchor", "end")
-		        .attr("dx", "-.8em")
-		        .attr("dy", ".15em")
-		        .attr("transform", function(d) {
-			        	return "rotate(-65)" 
-			        });
-				
+			var x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
+		    
+			var y = d3.scaleLinear().rangeRound([height, 0]);
+			
+			x.domain(filtered.map(function(filtered) {  if(citta=="") {return filtered.Stazione;} else { return filtered.DataRilevazione; }; }));
+			
+			if(citta=="" || filtro=="UMARIA2M_MEDG" || filtro=="TEMPARIA2M_MAXG") { 
+				y.domain([0, d3.max(filtered, function(filtered) { return filtered.Valore; }) ]);
+			}
+			else {
+				y.domain(d3.extent(filtered, function(data) {
+					return data.Valore;
+				})).nice();			
+			}
+			if(citta=="") {
+				g.append("g")
+			        .attr("class", "axis axis--x")
+			        .attr("transform", "translate(0," + height + ")")
+			        .call(d3.axisBottom(x))
+			        .selectAll("text")	
+			      	.style("text-anchor", "end")
+			        .attr("dx", "-.8em")
+			        .attr("dy", ".15em")
+			        .attr("transform", function(d) {
+				        	return "rotate(-65)" 
+				        });
+			}
+
 			g.append("g")
 			    .attr("class", "axis axis--y")
 			    .call(d3.axisLeft(y).ticks(10, ""))
@@ -344,13 +358,31 @@ function updateData(filtro) {
 			    	tooltip.select("text").text(txt);
 
 			  })
+			  
 
 			.transition(t)
 			    .attr("class", "bar")		
 			    .attr("x", function(filtered) { if(citta=="") {return x(filtered.Stazione);} else { return x(filtered.DataRilevazione); }; })						
-			    .attr("y", function(filtered) { return y(filtered.Valore); })					
-			    .attr("width", x.bandwidth())					
-			    .attr("height", function(filtered) { return height - y(filtered.Valore); })
+				.attr("y", function(filtered) {
+					if(citta!="" && filtro!="UMARIA2M_MEDG") {
+						if (filtered.Valore > 0){
+							return y(filtered.Valore);
+						} else {
+							return y(0);
+						}
+					}
+					else return y(filtered.Valore);
+						
+				})				
+				.attr("width", x.bandwidth())					
+				.attr("height", function(filtered) { 
+					if(citta!="" && filtro!="UMARIA2M_MEDG") {	
+						return Math.abs(y(filtered.Valore) - y(0)); 
+					}
+					else {
+						return height - y(filtered.Valore);
+					}
+				})
 				.attr("fill", function(filtered) { if(filtro=="TEMPARIA2M_MAXG") { return "rgb(" + Math.pow(filtered.Valore,2) +  ",0, 0)"; } 
 								   else { return "rgb(0, 0, " + Math.pow(filtered.Valore,2) + ")"; } });
 				

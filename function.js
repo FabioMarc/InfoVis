@@ -318,10 +318,22 @@ function updateData(filtro) {
 						})
 				})
 			  .on("mousemove", function(filtered) {
-			    var xPosition = d3.mouse(this)[0] - 15;
-			    var yPosition = d3.mouse(this)[1] - 25;
-			    tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
-			    tooltip.select("text").text(filtered.Valore);
+				var xPosition = d3.mouse(this)[0] - 15;
+				var yPosition = d3.mouse(this)[1] - 25;
+				tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+				var txt="";
+				if(citta==""){
+					txt=filtered.Stazione+": "+filtered.Valore;
+				}else{
+					txt=filtered.DataRilevazione+": "+filtered.Valore;
+				}
+				
+				if(filtro=="UMARIA2M_MEDG"||filtro=="PREC_TOTG"){
+					txt=txt+"%";
+				}else{
+					txt=txt+"°C";
+				}
+			    	tooltip.select("text").text(txt);
 			  })
 
 			.transition(t)
@@ -340,16 +352,17 @@ function updateData(filtro) {
 				.style("display", "none");
 				    
 			tooltip.append("rect")
-			  .attr("width", 40)
-			  .attr("height", 20)
-			  .attr("fill", "white")
-			  .style("opacity", 0.5);
-				
+				.attr("x", -90)
+				.attr("width",280)
+				.attr("height", 20)
+				.attr("fill", "white")
+				.style("opacity", 0.5);
+					
 			tooltip.append("text")
-			  .attr("x", 18)
-			  .attr("dy", "1.0em")
-			  .style("text-anchor", "middle")
-			  .attr("font-size", "16px")
-			  .attr("font-weight", "bold");	
+				.attr("x", 50)
+				.attr("dy", "1.0em")
+				.style("text-anchor", "middle")
+				.attr("font-size", "16px")
+				.attr("font-weight", "bold");	
 	});
 }

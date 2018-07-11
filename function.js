@@ -87,8 +87,8 @@ function inseriscriTitoloAssi(g,citta,etichettaAsseY) {
 			}
 			else {
 				g.append("text")
-				        .attr("x", 700 )
-				        .attr("y",  510 )
+				        .attr("x", 600 )
+				        .attr("y",  460 )
 				        .style("text-anchor", "middle")
 				        .text("Citta'");			
 			}

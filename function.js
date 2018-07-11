@@ -1,7 +1,7 @@
 //=====================================================================+
 // File name 	: function.js
 // Begin	: 21/06/2018
-// Last Update	: 08/07/2018
+// Last Update	: 11/07/2018
 // Description  : InfoVis - Secondo Progetto, libreria delle funzioni.
 // Author	: Fabio Marchionni & Giulio Dini
 // Versione	: 1.6
@@ -292,7 +292,8 @@ function updateData(filtro) {
 			
 			x.domain(filtered.map(function(filtered) {  if(citta=="") {return filtered.Stazione;} else { return filtered.DataRilevazione; }; }));
 			
-			if(citta=="" || filtro=="UMARIA2M_MEDG" || filtro=="TEMPARIA2M_MAXG") { 
+			//Per la gestione dei valori negativi
+			if(citta=="" && (filtro=="UMARIA2M_MEDG" || filtro=="TEMPARIA2M_MAXG" || filtro!="TEMPARIA2M_MING") ) { 
 				y.domain([0, d3.max(filtered, function(filtered) { return filtered.Valore; }) ]);
 			}
 			else {
@@ -300,7 +301,8 @@ function updateData(filtro) {
 					return data.Valore;
 				})).nice();			
 			}
-			if(citta=="") {
+			
+			if(citta=="" && filtro!="TEMPARIA2M_MING") {
 				g.append("g")
 			        .attr("class", "axis axis--x")
 			        .attr("transform", "translate(0," + height + ")")
@@ -313,7 +315,7 @@ function updateData(filtro) {
 				        	return "rotate(-65)" 
 				        });
 			}
-
+			
 			g.append("g")
 			    .attr("class", "axis axis--y")
 			    .call(d3.axisLeft(y).ticks(10, ""))
@@ -335,8 +337,11 @@ function updateData(filtro) {
 						d3.select(this).style("fill","yellow");})
 				.on("mouseout", function(filtered) {tooltip.style("display", "none"); 
 						d3.select(this).style("fill",function(SerieFiltrata){
-									if(filtro=="TEMPARIA2M_MAXG") {return "rgb(" + Math.pow(SerieFiltrata.Valore,2) +  ",0, 0)"; 
-									}else{return "rgb(0, 0, " + Math.pow(SerieFiltrata.Valore,2) + ")";}
+									if(filtro=="TEMPARIA2M_MAXG") {
+										return "rgb(" + Math.pow(SerieFiltrata.Valore,2) +  ",68, 5)"; 
+									}else{
+										return "rgb(0,0, " + Math.pow(SerieFiltrata.Valore,2) + ")";
+									}
 						})
 				})
 			  .on("mousemove", function(filtered) {
@@ -364,7 +369,8 @@ function updateData(filtro) {
 			    .attr("class", "bar")		
 			    .attr("x", function(filtered) { if(citta=="") {return x(filtered.Stazione);} else { return x(filtered.DataRilevazione); }; })						
 				.attr("y", function(filtered) {
-					if(citta!="" && filtro!="UMARIA2M_MEDG") {
+					//Per la gestione dei valori negativi
+					if((citta!="" && filtro!="UMARIA2M_MEDG") || (citta=="" && filtro=="TEMPARIA2M_MING")) {
 						if (filtered.Valore > 0){
 							return y(filtered.Valore);
 						} else {
@@ -376,15 +382,22 @@ function updateData(filtro) {
 				})				
 				.attr("width", x.bandwidth())					
 				.attr("height", function(filtered) { 
-					if(citta!="" && filtro!="UMARIA2M_MEDG") {	
+					//Per la gestione dei valori negativi
+					if(citta!="" && filtro!="UMARIA2M_MEDG" || (citta=="" && filtro=="TEMPARIA2M_MING")) {	
 						return Math.abs(y(filtered.Valore) - y(0)); 
 					}
 					else {
 						return height - y(filtered.Valore);
 					}
 				})
-				.attr("fill", function(filtered) { if(filtro=="TEMPARIA2M_MAXG") { return "rgb(" + Math.pow(filtered.Valore,2) +  ",0, 0)"; } 
-								   else { return "rgb(0, 0, " + Math.pow(filtered.Valore,2) + ")"; } });
+				.attr("fill", function(filtered) { 
+								if(filtro=="TEMPARIA2M_MAXG") { 
+									return "rgb(" + Math.pow(filtered.Valore,2) +  ",68,5)"; 
+								} 
+								else { 
+									return "rgb(0, 0, " + Math.pow(filtered.Valore,2) + ")"; 
+								} 
+				});
 				
 				
 			//Dichiarazione del tooltip per la rappresentazione dei valori in mouseover

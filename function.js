@@ -4,7 +4,7 @@
 // Last Update	: 11/07/2018
 // Description  : InfoVis - Secondo Progetto, libreria delle funzioni.
 // Author	: Fabio Marchionni & Giulio Dini
-// Versione	: 1.6
+// Versione	: 1.7
 //
 //=====================================================================+
 
@@ -302,6 +302,7 @@ function updateData(filtro) {
 				})).nice();			
 			}
 			
+			//Label valori asse X
 			if(citta=="" && filtro!="TEMPARIA2M_MING") {
 				g.append("g")
 			        .attr("class", "axis axis--x")
@@ -314,6 +315,19 @@ function updateData(filtro) {
 			        .attr("transform", function(d) {
 				        	return "rotate(-65)" 
 				        });
+			}
+			else if (citta=="" && filtro=="TEMPARIA2M_MING") {
+				g.append("g")
+			        .attr("class", "axis axis--x")
+			        .attr("transform", "translate(0," + height + ")")
+			        .call(d3.axisBottom(x))
+			        .selectAll("text")	
+			      	.style("text-anchor", "end")
+			        .attr("dx", "-.8em")
+			        .attr("dy", ".15em")
+			        .attr("transform", function(d) {
+				        	return "rotate(-65)" 
+				        });			
 			}
 			
 			g.append("g")

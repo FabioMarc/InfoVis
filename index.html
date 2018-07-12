@@ -2,10 +2,10 @@
 <!--//=====================================================================+
 // File name 	: index.html
 // Begin	: 21/06/2018
-// Last Update	: 10/07/2018
+// Last Update	: 12/07/2018
 // Description  : InfoVis - Secondo Progetto, pagina principale.
-// Author		: Fabio Marchionni & Giulio Dini
-// Versione     : 1.4
+// Author	: Fabio Marchionni & Giulio Dini
+// Versione     : 1.5
 //
 //=====================================================================+-->
 <html>
@@ -23,13 +23,13 @@
 	</head>
 
 	<body onload="init()">
+		<div class="container">
 	     	<div class='divTitolo'>
-			<h1 align=center><font color="#4CAF50">Serie Storica Agrometeo Regione Lazio</font></h1>		
-		</div>
-		<div>
-			<table>
+				<h1 align=center><font color="#4CAF50">Serie Storica Agrometeo Regione Lazio</font></h1>
+			</div class="content">
+		<table>
 				<tr>
-					<td width="160">Seleziona un dataset </td>
+					<td width="160">Seleziona un dataset</td>
 					<td><div style="float:left;">    
 						<select id='anno' onchange="settaNomeFile();">
 						  <option value="2018">2018</option>
@@ -45,10 +45,10 @@
 						<img onclick="javascript:changeDate('next')" src="img/next.jpg"  height="21" width="21"/>		
 						&ensp; Filtro sulla città: <select id="citta" onchange="document.getElementById('calendar').value = ''; document.getElementById('myCheckbox').disabled=true;";><option value=""></option></select>
 						<input type="checkbox" id="myCheckbox"> Ordinamento crescente
-					<br></td>
+					</td>
 					</tr>
 			</table>
-<table>
+            <table>
 				<tr>
 					<td>
 					    <button class="button" id="TMax" value="TemperaturaMax" onclick="updateData('TEMPARIA2M_MAXG')">Temperatura Max</button>
@@ -59,10 +59,12 @@
 					</td>
 				</tr>
 				<tr>
-					<td></br><svg id="grafico" width="1400" height="550"></svg></td>
+					<td></br><svg id="grafico" width="1400" height="500"></svg></td>
 				</tr>
 			</table>
 		</div>
+		</br>
+		<td>Fonte dati:<a href="http://dati.lazio.it/catalog/it/dataset/serie-storica-agrometeo" target="_blank">Regione Lazio</a></td>
 	</body>
 </html>
 

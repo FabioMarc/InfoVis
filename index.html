@@ -22,12 +22,12 @@
 
 	</head>
 
-	<body onload="init()">
+	<body onload="init()" >
 		<div class="container">
 	     	<div class='divTitolo'>
 				<h1 align=center><font color="#4CAF50">Serie Storica Agrometeo Regione Lazio</font></h1>
 			</div class="content">
-		<table>
+		<table width='1500'>
 				<tr>
 					<td width="160">Seleziona un dataset</td>
 					<td><div style="float:left;">    
@@ -45,6 +45,7 @@
 						<img onclick="javascript:changeDate('next')" src="img/next.jpg"  height="21" width="21"/>		
 						&ensp; Filtro sulla città: <select id="citta" onchange="document.getElementById('calendar').value = ''; document.getElementById('myCheckbox').disabled=true;";><option value=""></option></select>
 						<input type="checkbox" id="myCheckbox"> Ordinamento crescente
+						&ensp; &ensp;&ensp;&ensp;&ensp; &ensp; Fonte dati:<a href="http://dati.lazio.it/catalog/it/dataset/serie-storica-agrometeo" target="_blank">Regione Lazio</a>
 					</td>
 					</tr>
 			</table>
@@ -64,8 +65,7 @@
 			</table>
 		</div>
 		</br>
-		<td>Fonte dati:<a href="http://dati.lazio.it/catalog/it/dataset/serie-storica-agrometeo" target="_blank">Regione Lazio</a></td>
-	</body>
+</body>
 </html>
 
 

@@ -1,10 +1,10 @@
 //=====================================================================+
 // File name 	: function.js
 // Begin	: 21/06/2018
-// Last Update	: 11/07/2018
+// Last Update	: 12/07/2018
 // Description  : InfoVis - Secondo Progetto, libreria delle funzioni.
 // Author	: Fabio Marchionni & Giulio Dini
-// Versione	: 1.7
+// Versione	: 1.8
 //
 //=====================================================================+
 
@@ -292,9 +292,12 @@ function updateData(filtro) {
 			
 			x.domain(filtered.map(function(filtered) {  if(citta=="") {return filtered.Stazione;} else { return filtered.DataRilevazione; }; }));
 			
+			var maxValore = d3.max(filtered, function(filtered) { return filtered.Valore; });
+			var minValore = d3.min(filtered, function(filtered) { return filtered.Valore; });			
 			//Per la gestione dei valori negativi
-			if(citta=="" && (filtro=="UMARIA2M_MEDG" || filtro=="TEMPARIA2M_MAXG" || filtro!="TEMPARIA2M_MING") ) { 
-				y.domain([0, d3.max(filtered, function(filtered) { return filtered.Valore; }) ]);
+			
+			if(minValore>0  ) { 
+				y.domain([0, maxValore ]);
 			}
 			else {
 				y.domain(d3.extent(filtered, function(data) {
@@ -384,7 +387,7 @@ function updateData(filtro) {
 			    .attr("x", function(filtered) { if(citta=="") {return x(filtered.Stazione);} else { return x(filtered.DataRilevazione); }; })						
 				.attr("y", function(filtered) {
 					//Per la gestione dei valori negativi
-					if((citta!="" && filtro!="UMARIA2M_MEDG") || (citta=="" && filtro=="TEMPARIA2M_MING")) {
+					if(minValore<0 ) {
 						if (filtered.Valore > 0){
 							return y(filtered.Valore);
 						} else {
@@ -397,7 +400,7 @@ function updateData(filtro) {
 				.attr("width", x.bandwidth())					
 				.attr("height", function(filtered) { 
 					//Per la gestione dei valori negativi
-					if(citta!="" && filtro!="UMARIA2M_MEDG" || (citta=="" && filtro=="TEMPARIA2M_MING")) {	
+					if(minValore<0 ) {	
 						return Math.abs(y(filtered.Valore) - y(0)); 
 					}
 					else {

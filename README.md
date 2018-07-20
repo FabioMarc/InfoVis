@@ -1,5 +1,5 @@
 Secondo progetto del corso di Visualizzazione delle Informazioni a.a. 2017-2018
-
+========================================================================================================================
 Autori: Gruppo DiMa (Fabio Marchionni & Giulio Dini)
 Creato con: D3.js - Data-Driven Documents
 Soggetto: Visualizzazione Open Data - Analisi dei dati relativi alla situazione metereologica nei comuni della regione Lazio

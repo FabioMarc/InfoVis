@@ -4,7 +4,7 @@ Autori: Gruppo DiMa (Fabio Marchionni & Giulio Dini)
 Creato con: D3.js - Data-Driven Documents
 Soggetto: Visualizzazione Open Data - Analisi dei dati relativi alla situazione metereologica nei comuni della regione Lazio
 
-Lo scopo del progetto consiste nel visualizzare in modo opportuno i dati metereologici estratti dalla serie storica Agrometeo nel siito della Regione Lazio.
+Lo scopo del progetto consiste nel visualizzare in modo opportuno i dati metereologici estratti dalla serie storica Agrometeo nel sito della Regione Lazio.
 I dati rappresentati corrispondono nello specifico alle temperature (massima, minima e media), alla percentuale d'umidità e alle precipitazioni, ed in particolare abbiamo optato per due possibili forme di visualizzazione:
 la prima, in funzione della data, permette di confrontare i vari comuni del Lazio, la seconda invece in funzione della località, che consente di controllare l'andamento delle condizioni metereologiche nel corso del tempo.
 
